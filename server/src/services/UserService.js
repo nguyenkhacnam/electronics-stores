@@ -134,6 +134,24 @@ class UserService {
       }
     })
   }
+
+
+  // [GET] /api/user/getAllUsers
+  getAllUsers() {
+    return new Promise(async (resolve, reject) => {
+      try {
+        const getAllUsers = await User.find()
+        // console.log('checkUser', getAllUsers)
+        resolve({
+          status: 'OK',
+          message: 'Get All Users success',
+          data: getAllUsers
+        })
+      } catch (error) {
+        reject(error)
+      }
+    })
+  }
 }
 
 module.exports = new UserService

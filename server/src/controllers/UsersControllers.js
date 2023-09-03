@@ -105,6 +105,18 @@ class UsersControllers {
       })
     }
   }
+
+  // [GET] /api/user/getAllUsers
+  async getAllUsers(req, res) {
+    try {
+      const response = await userService.getAllUsers()
+      res.status(200).json(response)
+    } catch (error) {
+      return res.status(404).json({
+        message: error
+      })
+    }
+  }
 }
 
 module.exports = new UsersControllers

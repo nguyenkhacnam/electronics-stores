@@ -7,5 +7,6 @@ router.post('/register', usersControllers.createUser)
 router.post('/login', usersControllers.loginUser)
 router.put('/update-user/:id', usersControllers.updateUser)
 router.delete('/delete-user/:id', authenticationMiddleware.authMiddleware, usersControllers.deleteUser)
+router.get('/getAllUsers', authenticationMiddleware.authMiddleware, usersControllers.getAllUsers)
 
 module.exports = router
