@@ -152,6 +152,30 @@ class UserService {
       }
     })
   }
+
+
+  // [GET] /api/user/getDetailUser/:id
+  getDetailUser(id) {
+    return new Promise(async (resolve, reject) => {
+      try {
+        const getDetailUser = await User.findOne({_id: id})
+
+        if (getDetailUser === null) {
+          resolve({
+            status: 'ERR',
+            message: 'The user is not defined'
+          })
+        }
+        resolve({
+          status: 'OK',
+          message: 'Get Detail User success',
+          data: getDetailUser
+        })
+      } catch (error) {
+        reject(error)
+      }
+    })
+  }
 }
 
 module.exports = new UserService
