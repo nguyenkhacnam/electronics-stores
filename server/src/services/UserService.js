@@ -82,6 +82,7 @@ class UserService {
     })
   }
 
+  // [PUT] /api/user/update-user/:id
   updateUser(id, data) {
     return new Promise(async (resolve, reject) => {
       try {
@@ -94,7 +95,7 @@ class UserService {
           })
         }
 
-        const updatedUser = await User.findByIdAndUpdate(id, data, {new: true})
+        const updatedUser = await User.findByIdAndUpdate(id, data, { new: true })
         console.log('updateUser', updatedUser)
 
         resolve({
@@ -108,6 +109,31 @@ class UserService {
     })
   }
 
+
+  // [DELETE] /api/user/delete-user/:id
+  deleteUser(id) {
+    return new Promise(async (resolve, reject) => {
+      try {
+        const checkUser = await User.findOne({ _id: id })
+        console.log('checkUser', checkUser)
+        if (checkUser === null) {
+          resolve({
+            status: 'ERR',
+            message: 'The user is not defined'
+          })
+        }
+
+        await User.findByIdAndDelete(id)
+
+        resolve({
+          status: 'OK',
+          message: 'Delete user success',
+        })
+      } catch (error) {
+        reject(error)
+      }
+    })
+  }
 }
 
 module.exports = new UserService

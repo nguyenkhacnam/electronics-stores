@@ -65,7 +65,7 @@ class UsersControllers {
     }
   }
 
-  // [POST] /api/user/update-user/:id
+  // [PUT] /api/user/update-user/:id
   async updateUser(req, res) {
     try {
       const userId = req.params.id
@@ -78,6 +78,26 @@ class UsersControllers {
       }
       console.log('id', userId)
       const response = await userService.updateUser(userId, dataUser)
+      res.status(200).json(response)
+    } catch (error) {
+      return res.status(404).json({
+        message: error
+      })
+    }
+  }
+
+  // [DELETE] /api/user/delete-user/:id
+  async deleteUser(req, res) {
+    try {
+      const userId = req.params.id
+      if (!userId) {
+        res.status(200).json({
+          status: 'ERR',
+          message: 'The userId is required'
+        })
+      }
+      console.log('id', userId)
+      const response = await userService.deleteUser(userId)
       res.status(200).json(response)
     } catch (error) {
       return res.status(404).json({
