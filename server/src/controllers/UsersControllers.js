@@ -64,6 +64,27 @@ class UsersControllers {
       })
     }
   }
+
+  // [POST] /api/user/update-user/:id
+  async updateUser(req, res) {
+    try {
+      const userId = req.params.id
+      const dataUser = req.body
+      if (!userId) {
+        res.status(200).json({
+          status: 'ERR',
+          message: 'The userId is required'
+        })
+      }
+      console.log('id', userId)
+      const response = await userService.updateUser(userId, dataUser)
+      res.status(200).json(response)
+    } catch (error) {
+      return res.status(404).json({
+        message: error
+      })
+    }
+  }
 }
 
 module.exports = new UsersControllers

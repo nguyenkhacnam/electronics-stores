@@ -1,10 +1,11 @@
 const jwt = require('jsonwebtoken')
-
+const dotenv = require('dotenv')
+dotenv.config()
 class JwtService {
   generateAccessToken(payload) {
     const accessToken = jwt.sign(
       { payload },
-      'access_token',
+      process.env.ACCESS_TOKEN,
       { expiresIn: '1h' },
     )
 
@@ -14,7 +15,7 @@ class JwtService {
   generateRefreshToken(payload) {
     const refreshToken = jwt.sign(
       { payload },
-      'refresh_token',
+      process.env.REFRESH_TOKEN,
       { expiresIn: '365d' },
     )
 

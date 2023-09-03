@@ -1,7 +1,7 @@
 const User = require('../models/UserModel')
 const bcrypt = require('bcrypt')
 const jwtService = require('./JwtService')
-const { checkout } = require('../routes/UsersRouter')
+
 class UserService {
 
   // [POST] /api/user/register
@@ -62,7 +62,7 @@ class UserService {
               id: checkUser._id,
               isAdmin: checkUser.isAdmin
             })
-            
+
             const refreshToken = await jwtService.generateAccessToken({
               id: checkUser._id,
               isAdmin: checkUser.isAdmin
@@ -81,6 +81,33 @@ class UserService {
       }
     })
   }
+
+  updateUser(id, data) {
+    return new Promise(async (resolve, reject) => {
+      try {
+        const checkUser = await User.findOne({ _id: id })
+        console.log('checkUser', checkUser)
+        if (checkUser === null) {
+          resolve({
+            status: 'ERR',
+            message: 'The user is not defined'
+          })
+        }
+
+        const updatedUser = await User.findByIdAndUpdate(id, data, {new: true})
+        console.log('updateUser', updatedUser)
+
+        resolve({
+          status: 'OK',
+          message: 'Thành công',
+          data: updatedUser
+        })
+      } catch (error) {
+        reject(error)
+      }
+    })
+  }
+
 }
 
 module.exports = new UserService
