@@ -1,5 +1,7 @@
 const User = require('../models/UserModel')
 const bcrypt = require('bcrypt')
+const jwtService = require('./JwtService')
+const { checkout } = require('../routes/UsersRouter')
 class UserService {
 
   // [POST] /api/user/register
@@ -56,10 +58,21 @@ class UserService {
               message: 'The password or user is incorrect'
             })
           } else {
+            const accessToken = await jwtService.generateAccessToken({
+              id: checkUser._id,
+              isAdmin: checkUser.isAdmin
+            })
+            
+            const refreshToken = await jwtService.generateAccessToken({
+              id: checkUser._id,
+              isAdmin: checkUser.isAdmin
+            })
+            console.log('accessToken', accessToken)
             resolve({
               status: 'OK',
               message: 'Thành công',
-              data: checkUser
+              accessToken,
+              refreshToken
             })
           }
         }
