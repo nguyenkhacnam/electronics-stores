@@ -1,5 +1,5 @@
 const User = require('../models/UserModel')
-
+const bcrypt = require('bcrypt')
 class UserService {
 
   // [POST] /api/user/register
@@ -14,11 +14,13 @@ class UserService {
             message: 'The email is already exist'
           })
         } else {
+          const saltRounds = 10
+          const hash = bcrypt.hashSync(password, saltRounds)
           const createdUser = await User.create({
             name,
             email,
-            password,
-            confirmPassword,
+            password: hash,
+            confirmPassword: hash,
             phone
           })
           if (createdUser) {
