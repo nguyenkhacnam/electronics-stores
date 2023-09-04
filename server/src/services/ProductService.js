@@ -66,7 +66,7 @@ class ProductService {
     return new Promise(async (resolve, reject) => {
       try {
         console.log('id', id)
-        
+
         const getDetailProduct = await Product.findOne({ _id: id })
         console.log('getDetailProduct', getDetailProduct)
         if (getDetailProduct === null) {
@@ -86,6 +86,28 @@ class ProductService {
     })
   }
 
+  // [DELETE] /api/product/delete/:id
+  deleteProduct(id) {
+    return new Promise(async (resolve, reject) => {
+      try {
+        const checkProduct = await Product.findOne({ _id: id })
+        if (checkProduct === null) {
+          resolve({
+            status: 'ERR',
+            message: 'The product is not defined'
+          })
+        }
+        await Product.findByIdAndDelete(id)
+
+        resolve({
+          status: 'OK',
+          message: 'Delete Product success',
+        })
+      } catch (error) {
+        reject(error)
+      }
+    })
+  }
 }
 
 module.exports = new ProductService
