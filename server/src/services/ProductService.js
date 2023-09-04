@@ -61,6 +61,31 @@ class ProductService {
     })
   }
 
+  // [GET] /api/product/detail/:id
+  getDetailProduct(id) {
+    return new Promise(async (resolve, reject) => {
+      try {
+        console.log('id', id)
+        
+        const getDetailProduct = await Product.findOne({ _id: id })
+        console.log('getDetailProduct', getDetailProduct)
+        if (getDetailProduct === null) {
+          resolve({
+            status: 'ERR',
+            message: 'The product is not defined'
+          })
+        }
+        resolve({
+          status: 'OK',
+          message: 'Get Detail Product success',
+          data: getDetailProduct
+        })
+      } catch (error) {
+        reject(error)
+      }
+    })
+  }
+
 }
 
 module.exports = new ProductService

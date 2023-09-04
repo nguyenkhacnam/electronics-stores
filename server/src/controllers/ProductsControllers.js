@@ -41,6 +41,26 @@ class ProductsControllers {
       })
     }
   }
+
+  // [GET] /api/product/detail/:id
+  async getDetailProduct(req, res) {
+    try {
+      const productId = req.params.id
+      if (!productId) {
+        return res.status(200).json({
+          status: 'ERR',
+          message: 'The productId is required'
+        })
+      }
+      console.log('productId', productId)
+      const response = await productService.getDetailProduct(productId)
+      res.status(200).json(response)
+    } catch (error) {
+      return res.status(404).json({
+        message: error
+      })
+    }
+  }
 }
 
 module.exports = new ProductsControllers
