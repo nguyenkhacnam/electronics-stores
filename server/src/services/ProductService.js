@@ -108,6 +108,22 @@ class ProductService {
       }
     })
   }
+
+  // [GET] /api/product/getAllProduct
+  getAllProduct() {
+    return new Promise(async (resolve, reject) => {
+      try {
+        const getAllProduct = await Product.find()
+        resolve({
+          status: 'OK',
+          message: 'Get All Product success',
+          data: getAllProduct
+        })
+      } catch (error) {
+        reject(error)
+      }
+    })
+  }
 }
 
 module.exports = new ProductService

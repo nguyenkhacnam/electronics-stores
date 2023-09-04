@@ -81,6 +81,19 @@ class ProductsControllers {
       })
     }
   }
+
+  // [GET] /api/product/getAllProduct
+  async getAllProduct(req, res) {
+    try {
+      const response = await productService.getAllProduct()
+      res.status(200).json(response)
+    } catch (error) {
+      return res.status(404).json({
+        message: error
+      })
+    }
+  }
+
 }
 
 module.exports = new ProductsControllers
