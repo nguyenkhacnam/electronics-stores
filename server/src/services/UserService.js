@@ -63,7 +63,7 @@ class UserService {
               isAdmin: checkUser.isAdmin
             })
 
-            const refreshToken = await jwtService.generateAccessToken({
+            const refreshToken = await jwtService.generateRefreshToken({
               id: checkUser._id,
               isAdmin: checkUser.isAdmin
             })

@@ -6,7 +6,7 @@ class JwtService {
     const accessToken = jwt.sign(
       { payload },
       process.env.ACCESS_TOKEN,
-      { expiresIn: '1h' },
+      { expiresIn: '20s' },
     )
 
     return accessToken
@@ -20,6 +20,35 @@ class JwtService {
     )
 
     return refreshToken
+  }
+
+  refreshTokenJwtService(token) {
+    return new Promise((resolve, reject) => {
+      try {
+        jwt.verify(token, process.env.REFRESH_TOKEN, async (err, user) => {
+          if (err) {
+            console.log('err', err)
+            resolve({
+              status: 'ERR',
+              message: 'Authentication failed'
+            })
+          }
+          const { payload } = user
+          const accessToken =  await this.generateAccessToken({
+            id: payload?.id,
+            isAdmin: payload?.isAdmin
+          })
+          resolve({
+            status: 'OK',
+            message: 'generate AccessToken SUCCESS',
+            accessToken
+          })
+        })
+      } catch (e) {
+        reject(e)
+      }
+    })
+
   }
 }
 module.exports = new JwtService

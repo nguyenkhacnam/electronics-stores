@@ -1,4 +1,6 @@
 const userService = require('../services/UserService')
+const jwtService = require('../services/JwtService')
+
 class UsersControllers {
 
   // [POST] /api/user/register
@@ -133,6 +135,25 @@ class UsersControllers {
     } catch (error) {
       return res.status(404).json({
         message: error
+      })
+    }
+  }
+
+  // [POST] /api/user/refreshToken
+  async refreshToken(req, res) {
+    try {
+      let token = req.headers.token.split(' ')[1]
+      if (!token) {
+        return res.status(200).json({
+          status: 'ERR',
+          message: 'The token is required'
+        })
+      }
+      const response = await jwtService.refreshTokenJwtService(token)
+      return res.status(200).json(response)
+    } catch (e) {
+      return res.status(404).json({
+        message: e
       })
     }
   }
