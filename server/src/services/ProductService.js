@@ -109,15 +109,20 @@ class ProductService {
     })
   }
 
-  // [GET] /api/product/getAllProduct
-  getAllProduct() {
+  // [GET] /api/product/get-all
+  getAllProduct(limit = 8, page = 0) {
     return new Promise(async (resolve, reject) => {
       try {
-        const getAllProduct = await Product.find()
+        const totalProduct = await Product.count()
+        const getAllProduct = await Product.find().limit(limit).skip(limit * page)
         resolve({
           status: 'OK',
           message: 'Get All Product success',
-          data: getAllProduct
+          data: getAllProduct,
+          totalProduct,
+          currentTotalProduct: limit,
+          currentPage: Number(page + 1),
+          totalPage: Math.ceil(totalProduct / limit)
         })
       } catch (error) {
         reject(error)
