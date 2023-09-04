@@ -110,10 +110,26 @@ class ProductService {
   }
 
   // [GET] /api/product/get-all
-  getAllProduct(limit = 8, page = 0) {
+  getAllProduct(limit, page, sort) {
     return new Promise(async (resolve, reject) => {
       try {
+        console.log('sort', sort)
         const totalProduct = await Product.count()
+        if (sort) {
+          const objSort = {}
+          objSort[sort[1]] = sort[0]
+          // console.log('objSort', objSort)
+          const getAllProductSort = await Product.find().limit(limit).skip(limit * page).sort(objSort)
+          resolve({
+            status: 'OK',
+            message: 'Get All Product Sort success',
+            data: getAllProductSort,
+            totalProduct,
+            currentTotalProduct: limit,
+            currentPage: Number(page + 1),
+            totalPage: Math.ceil(totalProduct / limit)
+          })
+        }
         const getAllProduct = await Product.find().limit(limit).skip(limit * page)
         resolve({
           status: 'OK',
