@@ -85,8 +85,8 @@ class ProductsControllers {
   // [GET] /api/product/get-all
   async getAllProduct(req, res) {
     try {
-      const { limit, page, sort } = req.query
-      const response = await productService.getAllProduct(Number(limit) || 8, Number(page)|| 0, sort)
+      const { limit, page, sort, filter } = req.query
+      const response = await productService.getAllProduct(Number(limit) || 8, Number(page)|| 0, sort, filter)
       res.status(200).json(response)
     } catch (error) {
       return res.status(404).json({
