@@ -16,12 +16,12 @@ class ProductService {
           })
         }
         const createProduct = await Product.create({
-          name, 
-          image, 
-          type, 
-          price, 
-          countInStock, 
-          rating, 
+          name,
+          image,
+          type,
+          price,
+          countInStock,
+          rating,
           description
         })
         if (createProduct) {
@@ -31,6 +31,30 @@ class ProductService {
             data: createProduct
           })
         }
+      } catch (error) {
+        reject(error)
+      }
+    })
+  }
+
+  // [PUT] /api/product/update/:id
+  updateProduct(id, data) {
+    return new Promise(async (resolve, reject) => {
+      try {
+        const checkProduct = await Product.findOne({ _id: id })
+        if (checkProduct === null) {
+          resolve({
+            status: 'ERR',
+            message: 'The product is not defined'
+          })
+        }
+
+        const updatedProduct = await Product.findByIdAndUpdate(id, data, { new: true })
+        resolve({
+          status: 'OK',
+          message: 'Updated Product Success',
+          data: updatedProduct
+        })
       } catch (error) {
         reject(error)
       }
