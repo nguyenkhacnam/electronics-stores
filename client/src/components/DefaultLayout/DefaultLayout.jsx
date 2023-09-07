@@ -1,11 +1,13 @@
-import React, { Children } from 'react'
+import React from 'react'
 import Header from '../Header/Header'
 import Footer from '../Footer/Footer'
+import Navigation from '../Navigation/Navigation'
 
 const DefaultLayout = ({children}) => {
   return (
-    <div>
+    <div className=''>
       <Header />
+      <Navigation />
       <div>
         { children }
       </div>

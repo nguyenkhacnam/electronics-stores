@@ -5,7 +5,6 @@ import DefaultLayout from "./components/DefaultLayout/DefaultLayout";
 
 function App() {
   return (
-    <h1 className="text-3xl font-bold underline">
       <Router>
         <Routes>
           {
@@ -28,7 +27,6 @@ function App() {
           }
         </Routes>
       </Router>
-    </h1>
   );
 }
 
