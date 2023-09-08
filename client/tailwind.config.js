@@ -9,7 +9,7 @@ module.exports = {
         '1500': '1500px',
       },
       padding: {
-        'xl-px': '50px',
+        'xl-px': '30px',
         '15': '15px',
       },
       margin: {
@@ -18,7 +18,8 @@ module.exports = {
       colors: {
         'primary': '#ff5252',
         'btn-text-color': '#ffffff',
-        'bg-white': '#ffffff'
+        'bg-white': '#ffffff',
+        'home': '#f9f9f9'
       },
       borderRadius: {
         'btn-radius': '5px'
