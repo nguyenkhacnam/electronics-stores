@@ -5,9 +5,20 @@ module.exports = {
   ],
   theme: {
     extend: {
+      maxWidth: {
+        '1500': '1500px',
+      },
+      padding: {
+        'xl-px': '50px',
+        '15': '15px',
+      },
+      margin: {
+        'xl-auto': 'auto',
+      },
       colors: {
         'primary': '#ff5252',
-        'btn-text-color': '#ffffff'
+        'btn-text-color': '#ffffff',
+        'bg-white': '#ffffff'
       },
       borderRadius: {
         'btn-radius': '5px'
@@ -29,6 +40,9 @@ module.exports = {
         semibold: '600',
         bold: '700',
         extrabold: '800',
+      },
+      transitionDelay: {
+        'delay-100': '100ms'
       },
     },
   },

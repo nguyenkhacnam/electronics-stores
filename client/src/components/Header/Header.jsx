@@ -22,12 +22,12 @@ const Header = () => {
     //     <div className='col-span-2 flex justify-center'>3</div>
     //   </div>
     // </div>
-    <div className='border-b-[1px] border-[#E5E5E5]'>
-      <div className='grid grid-cols-3 items-center gap-7 h-[55px]  px-[15px] max-w-[1500px]
+    <div className='border-b-[1px] border-[#E5E5E5] bg-bg-white'>
+      <div className='grid grid-cols-3 items-center gap-7 h-[55px]  px-15 max-w-1500
         sm:h-[56px] sm:grid-cols-4
         md:h-[56px] 
         lg:h-[86px] lg:grid-cols-6
-        xl:grid-cols-7 xl:mx-auto xl:px-[50px]
+        xl:grid-cols-7 xl:mx-xl-auto xl:px-xl-px
          2xl:grid-cols-8
         '>
         <div className='col-span-1 flex justify-center'>
@@ -44,14 +44,14 @@ const Header = () => {
         <div className='col-span-1
         '>
           <div className='flex justify-between cursor-pointer'>
-            <GoSearch className='header-icon lg:hidden hover:text-primary delay-150' />
-            <div className='hover:text-primary delay-150
+            <GoSearch className='header-icon lg:hidden hover:text-primary delay-delay-100' />
+            <div className='hover:text-primary delay-delay-100
             sm:flex sm:gap-[2px] 
             '>
               <AiOutlineUser className='header-icon' />
               <p className='hidden md:block cursor-pointer md:font-semibold '>Đăng nhập</p>
             </div>
-            <BsCart className='header-icon hover:text-primary delay-150' />
+            <BsCart className='header-icon hover:text-primary delay-delay-100' />
           </div>
         </div>
       </div>
