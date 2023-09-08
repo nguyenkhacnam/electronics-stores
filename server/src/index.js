@@ -4,11 +4,13 @@ const morgan = require('morgan')
 const database = require('./config/database')
 const routes = require('./routes')
 const bodyParser = require('body-parser')
+const cors = require('cors')
 dotenv.config()
 
 const app = express()
 const port = process.env.PORT
 
+app.use(cors())
 app.use(bodyParser.json())
 
 // http logger
