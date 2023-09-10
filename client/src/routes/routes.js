@@ -1,9 +1,11 @@
 import CartPage from "../pages/CartPage/CartPage";
 import HomePage from "../pages/HomePage/HomePage";
+import LoginPage from "../pages/LoginPage/LoginPage";
 import NotFoundPage from "../pages/NotFoundPage/NotFoundPage";
 import OrderPage from "../pages/OrderPage/OrderPage";
 import ProductPage from "../pages/ProductPage/ProductPage";
 import ProfilePage from "../pages/ProfilePage/ProfilePage";
+import RegisterPage from "../pages/RegisterPage/RegisterPage";
 
 const routes = [
   {
@@ -42,6 +44,18 @@ const routes = [
     isShowHeader: false,
     isShowFooter: false
   },
+  {
+    path: '/register',
+    page: RegisterPage,
+    isShowHeader: true,
+    isShowFooter: true
+},
+{
+    path: '/login',
+    page: LoginPage,
+    isShowHeader: true,
+    isShowFooter: true
+},
 ]
 
 export default routes
