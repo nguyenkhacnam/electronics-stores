@@ -6,10 +6,10 @@ class UsersControllers {
   // [POST] /api/user/register
   async createUser(req, res) {
     try {
-      const { name, email, password, confirmPassword, phone } = req.body
+      const { email, password, confirmPassword } = req.body
       const reg = /^\w+([-+.']\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$/
       const isCheckEmail = reg.test(email)
-      if (!name || !email || !password || !confirmPassword || !phone) {
+      if (!email || !password || !confirmPassword) {
         return res.status(200).json(
           {
             status: 'ERR',
@@ -59,7 +59,12 @@ class UsersControllers {
         )
       }
       const response = await userService.loginUser(req.body)
-      res.status(200).json(response)
+      const { refreshToken, ...newResponse} = response
+      res.cookie('refreshToken', refreshToken, {
+        httpOnly: true,
+        secure: true,
+      })
+      res.status(200).json(newResponse)
     } catch (error) {
       return res.status(404).json({
         message: error
@@ -141,8 +146,9 @@ class UsersControllers {
 
   // [POST] /api/user/refreshToken
   async refreshToken(req, res) {
+    // console.log('req.cookie', req.cookies)
     try {
-      let token = req.headers.token.split(' ')[1]
+      let token = req.cookies.refreshToken
       if (!token) {
         return res.status(200).json({
           status: 'ERR',
