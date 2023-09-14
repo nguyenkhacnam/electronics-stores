@@ -7,7 +7,7 @@ class UserService {
   // [POST] /api/user/register
   createUser(newUser) {
     return new Promise(async (resolve, reject) => {
-      const { name, email, password, confirmPassword, phone } = newUser
+      const { email, password} = newUser
       try {
         const isAlreadyExist = await User.findOne({ email })
         if (isAlreadyExist !== null) {
@@ -19,11 +19,9 @@ class UserService {
           const saltRounds = 10
           const hash = bcrypt.hashSync(password, saltRounds)
           const createdUser = await User.create({
-            name,
             email,
             password: hash,
             confirmPassword: hash,
-            phone
           })
           if (createdUser) {
             resolve({
@@ -48,7 +46,7 @@ class UserService {
         if (checkUser === null) {
           resolve({
             status: 'ERR',
-            message: 'The password that you have entered is incorrect'
+            message: 'The account does not exist'
           })
         } else {
           const comparePassword = bcrypt.compareSync(password, checkUser.password)
