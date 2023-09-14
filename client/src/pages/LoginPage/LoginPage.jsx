@@ -1,11 +1,20 @@
 import React, { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { userLogin } from '../../services/api/userService'
+import { getDetailUser, userLogin } from '../../services/api/userService'
 import { useResourceMutation } from '../../hooks/useResourceMutation'
 import Loading from '../../components/Loading/Loading'
 import { error, success } from '../../components/Message/Message'
+import jwt_decode from "jwt-decode";
+import { useDispatch } from 'react-redux'
+import { updateUser } from '../../redux/features/user/userSlice'
+import { useSelector } from 'react-redux'
+
 
 const LoginPage = () => {
+  const userData = useSelector(state => state?.user)
+console.log('userData', userData)
+
+  const dispatch = useDispatch()
 
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
@@ -37,6 +46,11 @@ const LoginPage = () => {
     console.log('submit login', email, password)
   }
 
+  const handleGetDetailUser = async (id, accessToken) => {
+    const res = await getDetailUser(id, accessToken)
+    dispatch(updateUser({...res?.data, accessToken}))
+  }
+
   useEffect(() => {
     if ( data?.status === 'ERR') {
       error()
@@ -47,6 +61,14 @@ const LoginPage = () => {
       navigation('/')
       console.log('data', data)
       localStorage.setItem('accessToken', data?.accessToken)
+      if (data?.accessToken) {
+        const decoded = jwt_decode(data?.accessToken);
+        console.log('decoded', decoded)
+
+        if (decoded?.payload?.id) {
+          handleGetDetailUser(decoded?.payload?.id, data?.accessToken)
+        }
+      }
     }
   }, [isSuccess, isError, data?.status])
 

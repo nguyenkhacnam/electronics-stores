@@ -20,3 +20,13 @@ export const userRegister = async (data) => {
 
   return res.data
 }
+
+export const getDetailUser = async (id, accessToken) => {
+  const res = await axios.get(`${process.env.REACT_APP_API_URL}/user/getDetailUser/${id}`, {
+    headers: {
+      token: `Bearer ${accessToken}`
+    }
+  })
+
+  return res.data
+}
