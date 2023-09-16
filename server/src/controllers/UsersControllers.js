@@ -59,7 +59,7 @@ class UsersControllers {
         )
       }
       const response = await userService.loginUser(req.body)
-      const { refreshToken, ...newResponse} = response
+      const { refreshToken, ...newResponse } = response
       res.cookie('refreshToken', refreshToken, {
         httpOnly: true,
         secure: false,
@@ -159,6 +159,21 @@ class UsersControllers {
       }
       const response = await jwtService.refreshTokenJwtService(token)
       return res.status(200).json(response)
+    } catch (e) {
+      return res.status(404).json({
+        message: e
+      })
+    }
+  }
+
+  // [POST] /api/user/logout
+  async logoutUser(req, res) {
+    try {
+      res.clearCookie('refreshToken')
+      return res.status(200).json({
+        status: 'OK',
+        message: 'Logout successfully'
+      })
     } catch (e) {
       return res.status(404).json({
         message: e

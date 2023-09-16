@@ -10,5 +10,6 @@ router.delete('/delete-user/:id', authenticationMiddleware.authMiddleware, users
 router.get('/getAllUsers', authenticationMiddleware.authMiddleware, usersControllers.getAllUsers)
 router.get('/getDetailUser/:id', authenticationMiddleware.authUserMiddleware, usersControllers.getDetailUser)
 router.post('/refresh-token', usersControllers.refreshToken)
+router.post('/logout', usersControllers.logoutUser)
 
 module.exports = router
