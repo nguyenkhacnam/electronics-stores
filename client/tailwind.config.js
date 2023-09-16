@@ -18,7 +18,8 @@ module.exports = {
       colors: {
         'primary': '#ff5252',
         'btn-text-color': '#ffffff',
-        'bg-white': '#ffffff',
+        'bg-white': '#fed700',
+        'text': '#fff',
         'home': '#f9f9f9'
       },
       borderRadius: {
@@ -33,6 +34,7 @@ module.exports = {
         '3xl': '1.953rem',
         '4xl': '2.441rem',
         '5xl': '3.052rem',
+        '12': '12px'
       },
       fontWeight: {
         light: '300',

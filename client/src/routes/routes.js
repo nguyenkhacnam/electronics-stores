@@ -47,14 +47,14 @@ const routes = [
   {
     path: '/register',
     page: RegisterPage,
-    isShowHeader: true,
-    isShowFooter: true
+    isShowHeader: false,
+    isShowFooter: false
 },
 {
     path: '/login',
     page: LoginPage,
-    isShowHeader: true,
-    isShowFooter: true
+    isShowHeader: false,
+    isShowFooter: false
 },
 ]
 

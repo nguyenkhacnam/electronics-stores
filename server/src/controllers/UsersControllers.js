@@ -62,7 +62,8 @@ class UsersControllers {
       const { refreshToken, ...newResponse} = response
       res.cookie('refreshToken', refreshToken, {
         httpOnly: true,
-        secure: true,
+        secure: false,
+        sameSite: 'strict'
       })
       res.status(200).json(newResponse)
     } catch (error) {
@@ -147,6 +148,7 @@ class UsersControllers {
   // [POST] /api/user/refreshToken
   async refreshToken(req, res) {
     // console.log('req.cookie', req.cookies)
+    // console.log('req.cookies.refreshToken', req.cookies.refreshToken)
     try {
       let token = req.cookies.refreshToken
       if (!token) {
