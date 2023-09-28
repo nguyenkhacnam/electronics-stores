@@ -6,7 +6,7 @@ class JwtService {
     const accessToken = jwt.sign(
       { payload },
       process.env.ACCESS_TOKEN,
-      { expiresIn: '20s' },
+      { expiresIn: '1d' },
     )
 
     return accessToken

@@ -16,7 +16,7 @@ class AuthenticationMiddleware {
  */
   authMiddleware(req, res, next) {
     // console.log('first', req.headers.token)
-    const token = req.headers.token?.split(' ')[1]
+    const token = req.headers.Authorization?.split(' ')[1]
     jwt.verify(token, process.env.ACCESS_TOKEN, function (err, user) {
       if (err) {
         return res.status(404).json({
@@ -43,7 +43,7 @@ class AuthenticationMiddleware {
   // Middleware for handling user authentication and authorization.
   //This middleware verifies the JWT token in the request headers and checks if the user is authorized to access the requested user's information.
   authUserMiddleware(req, res, next) {
-    const token = req.headers.token?.split(' ')[1]
+    const token = req.headers.authorization?.split(' ')[1]
     const userId = req.params.id
     jwt.verify(token, process.env.ACCESS_TOKEN, function (err, user) {
       if (err) {
