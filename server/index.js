@@ -24,7 +24,7 @@ const options = {
       version: '1.0.11',
     },
   }, 
-  apis: ['./src/routes/*.js'], // files containing annotations as above
+  apis: ['./electronics-stores-swagger.yaml'], // files containing annotations as above
 };
 const openapiSpecification = swaggerJsdoc(options)
 // const swaggerDocument = YAML.parse(file)
