@@ -9,11 +9,11 @@ const cors = require('cors')
 dotenv.config()
 const swaggerJsdoc = require('swagger-jsdoc')
 const swaggerUi = require('swagger-ui-express')
-const fs = require("fs")
-const YAML = require('yaml')
-const path = require('path')
+// const fs = require("fs")
+// const YAML = require('yaml')
+// const path = require('path')
 
-const file  = fs.readFileSync(path.resolve('electronics-stores-swagger.yaml'), 'utf8')
+// const file  = fs.readFileSync(path.resolve('electronics-stores-swagger.yaml'), 'utf8')
 
 const options = {
   definition: {
@@ -27,7 +27,7 @@ const options = {
   apis: ['./src/routes/*.js'], // files containing annotations as above
 };
 const openapiSpecification = swaggerJsdoc(options)
-const swaggerDocument = YAML.parse(file)
+// const swaggerDocument = YAML.parse(file)
 
 const app = express()
 const port = process.env.PORT

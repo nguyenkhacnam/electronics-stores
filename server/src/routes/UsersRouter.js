@@ -4,6 +4,17 @@ const usersControllers = require('../controllers/UsersControllers')
 const authenticationMiddleware = require('../middleware/authenticationMiddleware')
 
 router.post('/register', usersControllers.createUser)
+/**
+ * @openapi
+ * /api/user/login:
+ *  post:
+ *    description: Login
+ *    tags: 
+ *      - Auth: 
+ *    requestBody:
+        description: Thông tin đăng nhập
+        
+ */
 router.post('/login', usersControllers.loginUser)
 router.put('/update-user/:id', usersControllers.updateUser)
 router.delete('/delete-user/:id', authenticationMiddleware.authMiddleware, usersControllers.deleteUser)
