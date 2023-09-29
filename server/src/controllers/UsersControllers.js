@@ -180,6 +180,25 @@ class UsersControllers {
       })
     }
   }
+
+    // [DELETE] /api/user/delete-many
+    async deleteMany(req, res) {
+      try {
+        const userIds = req.body
+        if (!userIds) {
+          return res.status(400).json({
+            status: 'ERR',
+            message: 'The userIds is required'
+          })
+        }
+        const response = await userService.deleteMany(userIds)
+        res.status(200).json(response)
+      } catch (error) {
+        return res.status(404).json({
+          message: error
+        })
+      }
+    }
 }
 
 module.exports = new UsersControllers

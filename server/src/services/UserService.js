@@ -7,7 +7,7 @@ class UserService {
   // [POST] /api/user/register
   createUser(newUser) {
     return new Promise(async (resolve, reject) => {
-      const { email, password} = newUser
+      const { email, password } = newUser
       try {
         const isAlreadyExist = await User.findOne({ email })
         if (isAlreadyExist !== null) {
@@ -156,7 +156,7 @@ class UserService {
   getDetailUser(id) {
     return new Promise(async (resolve, reject) => {
       try {
-        const getDetailUser = await User.findOne({_id: id})
+        const getDetailUser = await User.findOne({ _id: id })
 
         if (getDetailUser === null) {
           resolve({
@@ -168,6 +168,21 @@ class UserService {
           status: 'OK',
           message: 'Get Detail User success',
           data: getDetailUser
+        })
+      } catch (error) {
+        reject(error)
+      }
+    })
+  }
+
+  // [DELETE] /api/user/delete-many
+  deleteMany(userIds) {
+    return new Promise(async (resolve, reject) => {
+      try {
+        await User.deleteMany({ _id: userIds })
+        resolve({
+          status: 'OK',
+          message: 'Delete Users Successfully'
         })
       } catch (error) {
         reject(error)

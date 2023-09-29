@@ -22,5 +22,6 @@ router.get('/getAllUsers', authenticationMiddleware.authMiddleware, usersControl
 router.get('/getDetailUser/:id', authenticationMiddleware.authUserMiddleware, usersControllers.getDetailUser)
 router.post('/refresh-token', usersControllers.refreshToken)
 router.post('/logout', usersControllers.logoutUser)
+router.post('/delete-many', authenticationMiddleware.authMiddleware, usersControllers.deleteMany)
 
 module.exports = router
