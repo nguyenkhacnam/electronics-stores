@@ -95,6 +95,25 @@ class ProductsControllers {
     }
   }
 
+  // [DELETE] /api/product/delete-many
+  async deleteMany(req, res) {
+    try {
+      const productIds = req.body
+      if (!productIds) {
+        return res.status(400).json({
+          status: 'ERR',
+          message: 'The productIds is required'
+        })
+      }
+      const response = await productService.deleteMany(productIds)
+      res.status(200).json(response)
+    } catch (error) {
+      return res.status(404).json({
+        message: error
+      })
+    }
+  }
+
 }
 
 module.exports = new ProductsControllers

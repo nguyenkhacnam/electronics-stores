@@ -163,6 +163,21 @@ class ProductService {
       }
     })
   }
+
+   // [DELETE] /api/product/delete-many
+   deleteMany(productIds) {
+    return new Promise(async (resolve, reject) => {
+      try {
+        await Product.deleteMany({_id: productIds})
+        resolve({
+          status: 'OK',
+          message: 'Delete Products Successfully'
+        })
+      } catch (error) {
+        reject(error)
+      }
+    })
+  }
 }
 
 module.exports = new ProductService

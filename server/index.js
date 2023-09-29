@@ -18,7 +18,8 @@ const options = {
     info: {
       title: 'Electronics-Stores-API',
       description: `### Simple and Developer-Friendly API Documentation for Electronics Stores.
-      \n Welcome to the API Documentation for Electronics Stores! This API allows you to interact with our online electronics store, where you can browse and purchase a wide range of electronic products such as smartphones, laptops, and more. I've adopted a design-first approach to continuously improve our API and provide you with the best shopping experience`,
+      \n Welcome to the API Documentation for Electronics Stores! This API allows you to interact with our online electronics store, where you can browse and purchase a wide range of electronic products such as smartphones, laptops, and more. I've adopted a design-first approach to continuously improve our API and provide you with the best shopping experience
+      \n **Note**: Please be aware that our API may experience occasional delays, and response times could be up to 1 minute.I'm apologize for any inconvenience this may cause.`,
       contact: {
         email: 'namkhac605@gmail.com'
       },
