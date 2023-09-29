@@ -164,11 +164,11 @@ class ProductService {
     })
   }
 
-   // [DELETE] /api/product/delete-many
-   deleteMany(productIds) {
+  // [DELETE] /api/product/delete-many
+  deleteMany(productIds) {
     return new Promise(async (resolve, reject) => {
       try {
-        await Product.deleteMany({_id: productIds})
+        await Product.deleteMany({ _id: productIds })
         resolve({
           status: 'OK',
           message: 'Delete Products Successfully'
@@ -178,6 +178,23 @@ class ProductService {
       }
     })
   }
+
+  // [GET] /api/product/get-all-type
+  getAllTypeProduct() {
+    return new Promise(async (resolve, reject) => {
+      try {
+        const allType = await Product.distinct('type')
+        resolve({
+          status: 'OK',
+          message: 'Get All Type Products Successfully',
+          data: allType
+        })
+      } catch (error) {
+        reject(error)
+      }
+    })
+  }
+
 }
 
 module.exports = new ProductService

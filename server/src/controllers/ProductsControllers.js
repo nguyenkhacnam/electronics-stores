@@ -86,7 +86,7 @@ class ProductsControllers {
   async getAllProduct(req, res) {
     try {
       const { limit, page, sort, filter } = req.query
-      const response = await productService.getAllProduct(Number(limit) || 8, Number(page)|| 0, sort, filter)
+      const response = await productService.getAllProduct(Number(limit) || 8, Number(page) || 0, sort, filter)
       res.status(200).json(response)
     } catch (error) {
       return res.status(404).json({
@@ -106,6 +106,18 @@ class ProductsControllers {
         })
       }
       const response = await productService.deleteMany(productIds)
+      res.status(200).json(response)
+    } catch (error) {
+      return res.status(404).json({
+        message: error
+      })
+    }
+  }
+
+  // [GET] /api/product/get-all-type
+  async getAllTypeProduct(req, res) {
+    try {
+      const response = await productService.getAllTypeProduct()
       res.status(200).json(response)
     } catch (error) {
       return res.status(404).json({
