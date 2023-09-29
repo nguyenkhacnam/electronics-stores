@@ -16,7 +16,7 @@ class AuthenticationMiddleware {
  */
   authMiddleware(req, res, next) {
     // console.log('first', req.headers.token)
-    const token = req.headers.Authorization?.split(' ')[1]
+    const token = req.headers.authorization?.split(' ')[1]
     jwt.verify(token, process.env.ACCESS_TOKEN, function (err, user) {
       if (err) {
         return res.status(404).json({

@@ -16,7 +16,7 @@ router.post('/register', usersControllers.createUser)
         
  */
 router.post('/login', usersControllers.loginUser)
-router.put('/update-user/:id', usersControllers.updateUser)
+router.put('/update-user/:id', authenticationMiddleware.authUserMiddleware, usersControllers.updateUser)
 router.delete('/delete-user/:id', authenticationMiddleware.authMiddleware, usersControllers.deleteUser)
 router.get('/getAllUsers', authenticationMiddleware.authMiddleware, usersControllers.getAllUsers)
 router.get('/getDetailUser/:id', authenticationMiddleware.authUserMiddleware, usersControllers.getDetailUser)

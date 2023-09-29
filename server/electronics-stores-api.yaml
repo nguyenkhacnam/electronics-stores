@@ -1,0 +1,1278 @@
+openapi: 3.0.3
+info:
+  title: Electronics-Stores
+  description: |-
+    This is a sample Pet Store Server based on the OpenAPI 3.0 specification.  You can find out more about
+    Swagger at [https://swagger.io](https://swagger.io). In the third iteration of the pet store, we've switched to the design first approach!
+    You can now help us improve the API whether it's by making changes to the definition itself or to the code.
+    That way, with time, we can improve the API in general, and expose some of the new features in OAS3.
+
+    _If you're looking for the Swagger 2.0/OAS 2.0 version of Petstore, then click [here](https://editor.swagger.io/?url=https://petstore.swagger.io/v2/swagger.yaml). Alternatively, you can load via the `Edit > Load Petstore OAS 2.0` menu option!_
+    
+    Some useful links:
+    - [The Pet Store repository](https://github.com/swagger-api/swagger-petstore)
+    - [The source API definition for the Pet Store](https://github.com/swagger-api/swagger-petstore/blob/master/src/main/resources/openapi.yaml)
+  termsOfService: http://swagger.io/terms/
+  contact:
+    email: namkhac605@gmail.com
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+  version: 1.0.11
+externalDocs:
+  description: Find out more about Swagger
+  url: http://swagger.io
+servers:
+  - url: https://electronics-stores-render-api.onrender.com/api
+tags:
+  - name: User
+    description: Các API liên quan đến user
+  - name: Product
+    description: Các API liên quan đến product
+  - name: Order
+    description: Các API liên quan đến order
+paths:
+  /user/register:
+    post:
+      tags:
+        - User
+      summary: Đăng Ký
+      description: Đăng ký tài khoản ứng dụng
+      operationId: register
+      requestBody:
+        description: Thông tin đăng ký
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RegisterRequest'
+        required: true
+      responses:
+        '201':
+          description: Register Successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RegisterResponse'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              examples:
+                requiredInput:
+                  value:
+                    status: ERR
+                    message: The input is required
+                isCheckEmail: 
+                  value:
+                    status: ERR
+                    message: The email is not valid
+                emailExists:
+                  value:
+                    status: ERR
+                    message: The email is already exist
+        '404':
+          description: 404 not found
+ 
+  /user/login:
+    post:
+      tags:
+        - User
+      summary: Đăng Nhập
+      description: Đăng nhập ứng dụng
+      operationId: login
+      requestBody:
+        description: Thông tin đăng nhập
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LoginRequest'
+        required: true
+      responses:
+        '200':
+          description: Login Successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LoginResponse'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              examples:
+                account does not exist: 
+                  value:
+                    status: ERR
+                    message: The account does not exist
+                requiredInput:
+                  value:
+                    status: ERR
+                    message: The input is required
+                password or user is incorrect:
+                  value:
+                    status: ERR
+                    message: The password or user is incorrect
+        '404':
+          description: 404 not found
+
+  /user/getDetailUser/{id}: 
+    get:
+      tags:
+        - User
+      summary: Get detail user by ID
+      description: Returns a single user
+      operationId: getDetailUser
+      parameters:
+        - name: id
+          in: path
+          description: ID of user to return
+          required: true
+          schema:
+            type: string
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: Get Detail User success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/getDetailUserResponse'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              examples:
+                requiredUserId:
+                  value:
+                    status: ERR
+                    message: The userId is required
+                user is not defined: 
+                  value:
+                    status: ERR
+                    message: The user is not defined
+        '404':
+          description: 404 not found
+ 
+  /user/update-user/{id}: 
+    put:
+      tags:
+        - User
+      summary: Update user by ID
+      description: Returns a single user information
+      operationId: update-user
+      parameters:
+        - name: id
+          in: path
+          description: ID of user that needs to be updated
+          required: true
+          schema:
+            type: string
+      security:
+        - bearerAuth: []
+      requestBody:
+        description: User information needs updating
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateUserRequest'
+        required: true
+      responses:
+        '200':
+          description: Update User Successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UpdateUserResponse'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              examples:
+                requiredUserId:
+                  value:
+                    status: ERR
+                    message: The userId is required
+                user is not defined: 
+                  value:
+                    status: ERR
+                    message: The user is not defined
+        '404':
+          description: 404 not found
+ 
+  /user/refresh-token:
+    post:
+      summary: Refresh User Token
+      description: Refresh the user's authentication accessToken using a refresh token.
+      tags:
+        - User
+      parameters:
+        - name: refreshToken
+          in: cookie
+          description: ID of user that needs to be updated
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - refreshToken
+                properties:
+                  refreshToken:
+                    type: string
+                    example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c
+      responses:
+        '200':
+          description: Update User Successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UpdateUserResponse'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              examples:
+                requiredUserId:
+                  value:
+                    status: ERR
+                    message: The userId is required
+                user is not defined: 
+                  value:
+                    status: ERR
+                    message: The user is not defined
+        '404':
+          description: 404 not found
+ 
+  /user/getAllUsers:
+    get:
+      tags:
+        - User
+      summary: Get All User (For Admin)
+      description: Returns list user
+      operationId: getAllUsers
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: Get All User Successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/getAllUsersResponse'
+        '400':
+          description: Bad Request
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              examples:
+                Authentication error:
+                  value:
+                    status: ERR
+                    message: Authentication failed. Invalid or expired token
+        '404':
+          description: 404 not found
+
+  /user/delete-user/{id}:
+    delete:
+      tags:
+        - User
+      summary: Delete user by ID
+      description: Deletes a user by their ID
+      operationId: delete-user
+      parameters:
+        - name: id
+          in: path
+          description: ID of user to delete
+          required: true
+          schema:
+            type: string
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: User deleted successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DeleteUserResponse'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              examples:
+                requiredUserId:
+                  value:
+                    status: ERR
+                    message: The userId is required
+                userNotDefined:
+                  value:
+                    status: ERR
+                    message: The user is not defined
+        '404':
+          description: User not found
+
+  /user/logout:
+    post:
+      tags:
+        - User
+      summary: Logout
+      description: User Logout
+      operationId: logout
+      responses:
+        '200':
+          description: Logout Successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LogoutResponse'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              examples:
+                account does not exist: 
+                  value:
+                    status: ERR
+                    message: The account does not exist
+                requiredInput:
+                  value:
+                    status: ERR
+                    message: The input is required
+                password or user is incorrect:
+                  value:
+                    status: ERR
+                    message: The password or user is incorrect
+        '404':
+          description: 404 not found
+
+  /product/create:
+    post:
+      tags:
+        - Product
+      summary: Create
+      description: Create Product
+      operationId: create
+      security:
+        - bearerAuth: []
+      requestBody:
+        description: product information
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateProductRequest'
+        required: true
+      responses:
+        '200':
+          description: Logout Successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CreateProductResponse'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              examples:
+                requiredInput:
+                  value:
+                    status: ERR
+                    message: The input is required
+                The name of product is already exist:
+                  value:
+                    status: ERR
+                    message: The name of product is already exist
+        '404':
+          description: 404 not found
+ 
+  /product/update/{id}:
+    put:
+      tags:
+        - Product
+      summary: Update Product
+      description: Update Product
+      operationId: update
+      parameters:
+        - name: id
+          in: path
+          description: ID of user that needs to be updated
+          required: true
+          schema:
+            type: string
+      security:
+        - bearerAuth: []
+      requestBody:
+        description: Product information needs updating
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateProductRequest'
+        required: true
+      responses:
+        '200':
+          description: Logout Successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UpdateProductResponse'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              examples:
+                requiredInput:
+                  value:
+                    status: ERR
+                    message: The input is required
+                The name of product is already exist:
+                  value:
+                    status: ERR
+                    message: The name of product is already exist
+        '404':
+          description: 404 not found
+
+  /product/detail/{id}:
+    get:
+      tags:
+        - Product
+      summary: Get Product Detail
+      description: Get Product Detail
+      operationId: product-detail
+      responses:
+        '200':
+          description: Logout Successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProductDetailResponse'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              examples:
+                account does not exist: 
+                  value:
+                    status: ERR
+                    message: The account does not exist
+                requiredInput:
+                  value:
+                    status: ERR
+                    message: The input is required
+                password or user is incorrect:
+                  value:
+                    status: ERR
+                    message: The password or user is incorrect
+        '404':
+          description: 404 not found
+
+  /product/delete/{id}:
+    delete:
+      tags:
+        - Product
+      summary: Create
+      description: Create Product
+      operationId: logout
+      responses:
+        '200':
+          description: Logout Successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DeleteProductResponse'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              examples:
+                account does not exist: 
+                  value:
+                    status: ERR
+                    message: The account does not exist
+                requiredInput:
+                  value:
+                    status: ERR
+                    message: The input is required
+                password or user is incorrect:
+                  value:
+                    status: ERR
+                    message: The password or user is incorrect
+        '404':
+          description: 404 not found
+  
+  /product/get-all:
+    get:
+      tags:
+        - Product
+      summary: Create
+      description: Create Product
+      operationId: logout
+      responses:
+        '200':
+          description: Logout Successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetAllProductResponse'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              examples:
+                account does not exist: 
+                  value:
+                    status: ERR
+                    message: The account does not exist
+                requiredInput:
+                  value:
+                    status: ERR
+                    message: The input is required
+                password or user is incorrect:
+                  value:
+                    status: ERR
+                    message: The password or user is incorrect
+        '404':
+          description: 404 not found
+
+  /product/delete-many:
+    delete:
+      tags:
+        - Product
+      summary: Create
+      description: Create Product
+      operationId: logout
+      responses:
+        '200':
+          description: Logout Successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DeleteManyProductResponse'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              examples:
+                account does not exist: 
+                  value:
+                    status: ERR
+                    message: The account does not exist
+                requiredInput:
+                  value:
+                    status: ERR
+                    message: The input is required
+                password or user is incorrect:
+                  value:
+                    status: ERR
+                    message: The password or user is incorrect
+        '404':
+          description: 404 not found
+
+  /product/get-all-type:
+    get:
+      tags:
+        - Product
+      summary: Create
+      description: Create Product
+      operationId: logout
+      responses:
+        '200':
+          description: Logout Successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetAllTypeProductResponse'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              examples:
+                account does not exist: 
+                  value:
+                    status: ERR
+                    message: The account does not exist
+                requiredInput:
+                  value:
+                    status: ERR
+                    message: The input is required
+                password or user is incorrect:
+                  value:
+                    status: ERR
+                    message: The password or user is incorrect
+        '404':
+          description: 404 not found
+
+  /order/create/{id}:
+    post:
+      tags:
+        - Order
+      summary: Update Product
+      description: Update Product
+      operationId: update
+      parameters:
+        - name: id
+          in: path
+          description: ID of user that needs to be updated
+          required: true
+          schema:
+            type: string
+      security:
+        - bearerAuth: []
+      requestBody:
+        description: Product information needs updating
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateProductRequest'
+        required: true
+      responses:
+        '200':
+          description: Logout Successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UpdateProductResponse'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              examples:
+                requiredInput:
+                  value:
+                    status: ERR
+                    message: The input is required
+                The name of product is already exist:
+                  value:
+                    status: ERR
+                    message: The name of product is already exist
+        '404':
+          description: 404 not found
+
+  /order/get-all-order/{id}:
+    get:
+      tags:
+        - Order
+      summary: Get Product Detail
+      description: Get Product Detail
+      operationId: product-detail
+      responses:
+        '200':
+          description: Logout Successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProductDetailResponse'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              examples:
+                account does not exist: 
+                  value:
+                    status: ERR
+                    message: The account does not exist
+                requiredInput:
+                  value:
+                    status: ERR
+                    message: The input is required
+                password or user is incorrect:
+                  value:
+                    status: ERR
+                    message: The password or user is incorrect
+        '404':
+          description: 404 not found
+
+  /order/get-details-order/{id}:
+    get:
+      tags:
+        - Order
+      summary: Create
+      description: Create Product
+      operationId: logout
+      responses:
+        '200':
+          description: Logout Successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DeleteProductResponse'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              examples:
+                account does not exist: 
+                  value:
+                    status: ERR
+                    message: The account does not exist
+                requiredInput:
+                  value:
+                    status: ERR
+                    message: The input is required
+                password or user is incorrect:
+                  value:
+                    status: ERR
+                    message: The password or user is incorrect
+        '404':
+          description: 404 not found
+  
+  /order/cancel-order:
+    delete:
+      tags:
+        - Order
+      summary: Create
+      description: Create Product
+      operationId: logout
+      responses:
+        '200':
+          description: Logout Successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetAllProductResponse'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              examples:
+                account does not exist: 
+                  value:
+                    status: ERR
+                    message: The account does not exist
+                requiredInput:
+                  value:
+                    status: ERR
+                    message: The input is required
+                password or user is incorrect:
+                  value:
+                    status: ERR
+                    message: The password or user is incorrect
+        '404':
+          description: 404 not found
+
+  /order/get-all-order:
+    get:
+      tags:
+        - Order
+      summary: Create
+      description: Create Product
+      operationId: logout
+      responses:
+        '200':
+          description: Logout Successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetAllTypeProductResponse'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              examples:
+                account does not exist: 
+                  value:
+                    status: ERR
+                    message: The account does not exist
+                requiredInput:
+                  value:
+                    status: ERR
+                    message: The input is required
+                password or user is incorrect:
+                  value:
+                    status: ERR
+                    message: The password or user is incorrect
+        '404':
+          description: 404 not found
+
+components:
+  schemas:
+    RegisterRequest:
+      type: object
+      properties:
+        email:
+          type: string
+          example: nguyenkhacnam@gmail.com
+        password:
+          type: string
+          example: nam123
+        confirmPassword:
+          type: string
+          example: nam123
+
+    RegisterResponse:
+      type: object
+      properties:
+        status: 
+          type: string
+          example: OK
+        message: 
+          type: string
+          example: Register Successfully
+        data: 
+          type: object
+          properties:
+            email: 
+              type: string 
+              example: nguyenkhacnam@gmail.com
+            password: 
+              type: string 
+              example: $2b$10$YoolI.IYOo/hj3Fs/k6/dez.q9FdYMu5iTk0QCY50/8L5lM50iiz6
+            isAdmin: 
+              type: boolean
+              example: false
+            id: 
+              type: string
+              example: 6514d9dc6e801f792702ebec
+            createdAt:
+              type: string
+              example: 2023-09-28T01:41:48.255Z
+            updatedAt:
+              type: string
+              example: 2023-09-28T01:41:48.255Z
+
+    LoginRequest:
+      type: object
+      properties:
+        email:
+          type: string
+          example: nguyenkhacnam@gmail.com
+        password:
+          type: string
+          example: nam123
+ 
+    LoginResponse:
+      type: object
+      properties:
+        status: 
+          type: string
+          example: OK
+        message: 
+          type: string
+          example: Login Successfully
+        accessToken:
+          type: string  
+          example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwYXlsb2FkIjp7ImlkIjoiNjRmNGIyZDEwMjE2NjFhOTQyYjQzY2EzIiwiaXNBZG1pbiI6dHJ1ZX0sImlhdCI6MTY5NTg2OTg2NSwiZXhwIjoxNjk1ODY5ODg1fQ.CfMkwwqctLMIoujSxvufHWjpqqp0lPcDqLrbtm25iI4
+ 
+    User:
+      type: object
+      properties:
+        name:
+          type: string
+          default: ""
+        phone:
+          type: number
+          default: null
+        address:
+          type: string
+          default: ""
+        avatar:
+          type: string
+          default: ""
+        city:
+          type: string
+          default: ""
+        _id:
+          type: string
+          format: MongoId
+          example: "6514d9dc6e801f792702ebec"
+        email:
+          type: string
+          example: "nguyenkhacnam@gmail.com"
+        password:
+          type: string
+          example: "$2b$10$gLfptQvnTv1pcpKBoC32W.PXX.mLyPK2eVwPEioCBtcu2ZGPGJdFS"
+        isAdmin:
+          type: boolean
+          example: false
+        createdAt:
+          type: string
+          format: date-time
+          example: "2023-09-28T01:41:48.255Z"
+        updatedAt:
+          type: string
+          format: date-time
+          example: "2023-09-28T01:41:48.255Z"
+        __v:
+          type: integer
+          example: 0
+ 
+    getDetailUserResponse:
+      type: object
+      properties:
+        status: 
+          type: string
+          example: OK
+        message: 
+          type: string
+          example: Get Detail User success
+        data: 
+          type: object
+          properties:
+            name:
+              type: string
+              default: ""
+            phone:
+              type: number
+              default: null
+            address:
+              type: string
+              default: ""
+            avatar:
+              type: string
+              default: ""
+            city:
+              type: string
+              default: ""
+            _id:
+              type: string
+              format: MongoId
+              example: "6514d9dc6e801f792702ebec"
+            email:
+              type: string
+              example: "nguyenkhacnam@gmail.com"
+            password:
+              type: string
+              example: "$2b$10$gLfptQvnTv1pcpKBoC32W.PXX.mLyPK2eVwPEioCBtcu2ZGPGJdFS"
+            isAdmin:
+              type: boolean
+              example: false
+            createdAt:
+              type: string
+              format: date-time
+              example: "2023-09-28T01:41:48.255Z"
+            updatedAt:
+              type: string
+              format: date-time
+              example: "2023-09-28T01:41:48.255Z"
+            __v:
+              type: integer
+              example: 0
+    
+    UpdateUserRequest:
+      type: object
+      properties:
+        name:
+          type: string
+          example: Nguyễn Khắc Nam
+        phone:
+          type: string
+          example: 0329465355
+        address:
+          type: string
+          example: Liên Hà- Đan PHượng- Hà Nội
+        avatar:
+          type: string
+          format: uri
+          example: https://alumni.engineering.utoronto.ca/files/2022/05/Avatar-Placeholder-400x400-1.jpg
+        city:
+          type: string
+          example: Hà Nội
+        isAdmin:
+          type: boolean
+          example: true
+ 
+    UpdateUserResponse:
+      type: object
+      properties:
+        status: 
+          type: string
+          example: OK
+        message: 
+          type: string
+          example: Update User Successfully
+        data:
+          type: object
+          properties:
+            _id:
+              type: string
+              example: "6514d9dc6e801f792702ebec"
+            email:
+              type: string
+              format: email
+              example: "nguyenkhacnam@gmail.com"
+            password:
+              type: string
+              example: "$2b$10$gLfptQvnTv1pcpKBoC32W.PXX.mLyPK2eVwPEioCBtcu2ZGPGJdFS"
+            isAdmin:
+              type: boolean
+              example: true
+            createdAt:
+              type: string
+              format: date-time
+              example: "2023-09-28T01:41:48.255Z"
+            updatedAt:
+              type: string
+              format: date-time
+              example: "2023-09-29T06:31:40.209Z"
+            __v:
+              type: integer
+              example: 0
+            address:
+              type: string
+              example: "Liên Hà- Đan PHượng- Hà Nội"
+            avatar:
+              type: string
+              format: uri
+              example: "https://alumni.engineering.utoronto.ca/files/2022/05/Avatar-Placeholder-400x400-1.jpg"
+            city:
+              type: string
+              example: "Hà Nội"
+            name:
+              type: string
+              example: "Nguyễn Khắc Nam"
+            phone:
+              type: integer
+              example: 329465355
+ 
+    getAllUsersResponse:
+      type: object
+      properties:
+        status: 
+          type: string
+          example: OK
+        message: 
+          type: string
+          example: Get All Users Successfully
+        data:
+          type: array
+          items: 
+            $ref: '#/components/schemas/User'
+
+    DeleteUserResponse:
+      type: object
+      properties:
+        status: 
+          type: string
+          example: OK
+        message: 
+          type: string
+          example: Delete User Successfully
+
+    LogoutResponse:
+      type: object
+      properties:
+        status: 
+          type: string
+          example: OK
+        message: 
+          type: string
+          example: Logout Successfully
+  
+    CreateProductRequest:
+      type: object
+      properties:
+        name:
+          type: string
+          example: "iPhone 15 128GB | Chính hãng VN/A"
+        image:
+          type: string
+          format: url
+          example: "https://cdn2.cellphones.com.vn/insecure/rs:fill:358:358/q:80/plain/https://cellphones.com.vn/media/catalog/product/v/n/vn_iphone_15_pink_pdp_image_position-1a_pink_color_2.jpg"
+        type:
+          type: string
+          example: "phone"
+        price:
+          type: string
+          example: "22490000"
+        countInStock:
+          type: string
+          example: "10"
+        rating:
+          type: string
+          example: "4.5"
+        description:
+          type: string
+          example: "Đây là dòng điện thoại mới ra mắt!!!"
+        discount:
+          type: integer
+          example: 20
+        sold:
+          type: string
+          example: "1"
+   
+    CreateProductResponse:
+      type: object
+      properties:
+        status:
+          type: string
+          example: "OK"
+        message:
+          type: string
+          example: "Create Product Success"
+        data:
+          type: object
+          properties:
+            name:
+              type: string
+              example: "iPhone 15 128GB | Chính hãng VN/A"
+            image:
+              type: string
+              format: url
+              example: "https://cdn2.cellphones.com.vn/insecure/rs:fill:358:358/q:80/plain/https://cellphones.com.vn/media/catalog/product/v/n/vn_iphone_15_pink_pdp_image_position-1a_pink_color_2.jpg"
+            type:
+              type: string
+              example: "phone"
+            price:
+              type: number
+              example: 22490000
+            countInStock:
+              type: integer
+              example: 10
+            rating:
+              type: number
+              example: 4.5
+            description:
+              type: string
+              example: "Đây là dòng điện thoại mới ra mắt!!!"
+            _id:
+              type: string
+              example: "65169a4e6b7a38a60472047c"
+            createdAt:
+              type: string
+              format: date-time
+              example: "2023-09-29T09:35:10.805Z"
+            updatedAt:
+              type: string
+              format: date-time
+              example: "2023-09-29T09:35:10.805Z"
+            __v:
+              type: integer
+              example: 0
+  
+    UpdateProductRequest:
+      type: object
+      properties:
+        name:
+          type: string
+          example: "iPhone 15 128GB | Chính hãng VN/A"
+        image:
+          type: string
+          format: url
+          example: "https://cdn2.cellphones.com.vn/insecure/rs:fill:358:358/q:80/plain/https://cellphones.com.vn/media/catalog/product/v/n/vn_iphone_15_pink_pdp_image_position-1a_pink_color_2.jpg"
+        type:
+          type: string
+          example: "phone"
+        price:
+          type: string
+          example: "22490000"
+        countInStock:
+          type: string
+          example: "10"
+        rating:
+          type: string
+          example: "4.5"
+        description:
+          type: string
+          example: "Đây là dòng điện thoại mới ra mắt!!!"
+        discount:
+          type: integer
+          example: 20
+        sold:
+          type: string
+          example: "1"
+   
+    UpdateProductResponse:
+      type: object
+      properties:
+        status:
+          type: string
+          example: "OK"
+        message:
+          type: string
+          example: "Create Product Success"
+        data:
+          type: object
+          properties:
+            name:
+              type: string
+              example: "iPhone 15 128GB | Chính hãng VN/A"
+            image:
+              type: string
+              format: url
+              example: "https://cdn2.cellphones.com.vn/insecure/rs:fill:358:358/q:80/plain/https://cellphones.com.vn/media/catalog/product/v/n/vn_iphone_15_pink_pdp_image_position-1a_pink_color_2.jpg"
+            type:
+              type: string
+              example: "phone"
+            price:
+              type: number
+              example: 22490000
+            countInStock:
+              type: integer
+              example: 10
+            rating:
+              type: number
+              example: 4.5
+            description:
+              type: string
+              example: "Đây là dòng điện thoại mới ra mắt!!!"
+            _id:
+              type: string
+              example: "65169a4e6b7a38a60472047c"
+            createdAt:
+              type: string
+              format: date-time
+              example: "2023-09-29T09:35:10.805Z"
+            updatedAt:
+              type: string
+              format: date-time
+              example: "2023-09-29T09:35:10.805Z"
+            __v:
+              type: integer
+              example: 0
+
+    ProductDetailResponse:
+      type: object
+      properties:
+        status:
+          type: string
+          example: "OK"
+        message:
+          type: string
+          example: "Create Product Success"
+
+    DeleteProductResponse:
+      type: object
+      properties:
+        status:
+          type: string
+          example: "OK"
+        message:
+          type: string
+          example: "Create Product Success"
+
+    GetAllProductResponse:
+      type: object
+      properties:
+        status:
+          type: string
+          example: "OK"
+        message:
+          type: string
+          example: "Create Product Success"
+
+    DeleteManyProductResponse:
+      type: object
+      properties:
+        status:
+          type: string
+          example: "OK"
+        message:
+          type: string
+          example: "Create Product Success"
+    
+    GetAllTypeProductResponse:
+      type: object
+      properties:
+        status:
+          type: string
+          example: "OK"
+        message:
+          type: string
+          example: "Create Product Success"
+  securitySchemes:
+     bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT

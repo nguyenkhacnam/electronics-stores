@@ -9,33 +9,39 @@ const cors = require('cors')
 dotenv.config()
 const swaggerJsdoc = require('swagger-jsdoc')
 const swaggerUi = require('swagger-ui-express')
-// const fs = require("fs")
-// const YAML = require('yaml')
-// const path = require('path')
 
-// const file  = fs.readFileSync(path.resolve('electronics-stores-swagger.yaml'), 'utf8')
-
+const app = express()
+const port = process.env.PORT
 const options = {
   definition: {
     openapi: '3.0.0',
     info: {
-      title: 'Electronics-Stores',
-      description: 'API documentation for Electronics-Stores',
-      version: '1.0.11',
+      title: 'Electronics-Stores-API',
+      description: `### Simple and Developer-Friendly API Documentation for Electronics Stores.
+      \n Welcome to the API Documentation for Electronics Stores! This API allows you to interact with our online electronics store, where you can browse and purchase a wide range of electronic products such as smartphones, laptops, and more. I've adopted a design-first approach to continuously improve our API and provide you with the best shopping experience`,
+      contact: {
+        email: 'namkhac605@gmail.com'
+      },
+      version: '1.0.0'
     },
+    externalDocs: {
+      description: 'Source Repository',
+      url: 'https://github.com/nguyenkhacnam/electronics-stores'
+    },
+    servers: [
+      {
+        url: 'https://electronics-stores-render-api.onrender.com/api'
+      }
+    ],
   }, 
-  apis: ['./src/routes/*.js'], // files containing annotations as above
+  apis: ['./electronics-stores-api.yaml'], // files containing annotations as above
 };
 const openapiSpecification = swaggerJsdoc(options)
-// const swaggerDocument = YAML.parse(file)
 
-const app = express()
-const port = process.env.PORT
-
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(openapiSpecification));
 app.use(cors())
 app.use(bodyParser.json())
 app.use(cookieParser())
-app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(openapiSpecification));
 
 // http logger
 app.use(morgan('combined'))
